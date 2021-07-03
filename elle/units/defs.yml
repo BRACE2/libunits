@@ -1,0 +1,53 @@
+_groups:
+  mm:
+    length: milimeter
+  metric:
+    length: meter
+  imperial:
+    length: inch
+
+_prefix:
+  mili: 0.001
+  centi: 0.01
+
+#======================================
+# Length
+#======================================
+meter:
+  plural: meters
+  dimension: length
+  abbrev: ["m"]
+  si: 1.0 # exact
+
+milimeter:
+  plural: milimeters
+  dimension: length
+  abbrev: ["mm"]
+  si: 0.001 # exact
+
+inch:
+  si: 0.0254 # exact
+  plural: inches
+  dimension: length
+  abbrev: ["in"]
+  def: "0.0254 * meter"
+
+foot:
+  plural: feet
+  dimension: length
+  si: 0.3048 # exact
+  abbrev: ["ft"]
+
+yard:
+  abbrev: ["yd"]
+  dimension: length
+  si: 0.9144 # exact
+
+#======================================
+# Mass
+#======================================
+kilogram:
+  abbrev: ["kg"]
+  dimension: mass
+  si: 1.0
+
