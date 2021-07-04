@@ -1,10 +1,43 @@
 from pathlib import Path
 
-import yaml
+try:
+    import orjson as json
+
+except ImportError:
+    import json
+
 
 __all__ = ["UnitHandler"]
 
-DEF_FILE = Path(__file__).parents[0]/"defs.yml"
+JSON_DIR = Path(__file__).parents[2]/"json/"
+
+def load(system, *overrides, abbrev=True):
+    #if "," in base:
+
+    abbrev_ext = "-w_abbrev" if abbrev else ""
+
+    def_file = JSON_DIR / f"{system}{abbrev_ext}.json"
+    try:
+        with open(def_file, "r") as f:
+            defs = json.load(f)
+    except FileNotFoundError:
+        raise ValueError(f"Cannot find unit definition file {def_file}")
+    
+    #if overrides:
+    #    with open(JSON_DIR/"units.json", "r") as f:
+    #        all_units = json.load(f)
+
+        #for override in overrides:
+        #    dimension = all_units["units"][override]["dimension"]
+        #    base = all_units["systems"][system]["base_units"][dimension]
+        #    scale = 1/all_units["units"][override]["si"]
+
+        #    for unit in defs:
+        #        if all_units["units"][unit]["dimension"] == dimension:
+        #            defs[unit] *= scale * all_units["units"][unit]["si"]
+
+    return defs
+
 
 class SpacedDimensions:
     def __init__(self, step, justification):
@@ -41,32 +74,16 @@ class Dimension(float):
         return self * other
 
 
-def build_conversions(abbrev=True,**kwds)->dict:
-    with open(DEF_FILE, "r") as f:
-        defs = yaml.load(f, Loader=yaml.Loader)
-    output = {}
-    for name,unit in defs.items():
-        if "dimension" in unit and unit["dimension"] in kwds:
-            dimension = unit["dimension"]
-            dest_unit = kwds[dimension]
-            output[name] = Dimension(unit["si"] / defs[dest_unit]["si"])
-            if abbrev:
-                for abbrev in unit["abbrev"]:
-                    output[abbrev] = output[name]
-    return output
-
-def get_bases(base):
-    with open(DEF_FILE, "r") as f:
-        defs = yaml.load(f, Loader=yaml.Loader)
-    return defs["_groups"][base]
-
 
 class UnitHandler:
     def __init__(self, base, abbrev=True):
-        self.base_dims = base_dims = get_bases(base)    
-        for key, val in build_conversions(abbrev=abbrev,**base_dims).items():
-            setattr(self, key, val)
+        system, *overrides = base.split(", ")
+        self.base_dims = load(system, *overrides)
+        #for key, val in build_conversions(abbrev=abbrev,**base_dims).items():
+        #    setattr(self, key, val)
 
+    def __getattr__(self, name):
+        return Dimension(self.base_dims[name])
 
     def __repr__(self):
         return f"""<{', '.join(self.base_dims.values())}>"""

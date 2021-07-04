@@ -8,6 +8,11 @@ TESTDIR = ~/stdy
 
 PDOC = pdoc --template-dir $(STYDIR) -o $(DOCDIR)
 
+FORCE: 
+
+json: FORCE
+	rm json/*
+	python etc/build_json.py elle/units/defs.yml json/
 
 install:
 	python3 setup.py install

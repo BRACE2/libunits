@@ -1,53 +1,139 @@
-_groups:
-  mm:
-    length: milimeter
-  metric:
-    length: meter
-  imperial:
-    length: inch
-
-_prefix:
+prefixes:
   mili: 0.001
   centi: 0.01
 
-#======================================
-# Length
-#======================================
-meter:
-  plural: meters
-  dimension: length
-  abbrev: ["m"]
-  si: 1.0 # exact
+systems:
+  si:
+    base_units: &si_unit_system
+      TIME: second
+      LENGTH: meter
+      MASS: kilogram
+      FORCE: newton
+      temperature: Celsius
+      absolute_temperature: kelvin
 
-milimeter:
-  plural: milimeters
-  dimension: length
-  abbrev: ["mm"]
-  si: 0.001 # exact
+  metric:
+    base_units: *si_unit_system
 
-inch:
-  si: 0.0254 # exact
-  plural: inches
-  dimension: length
-  abbrev: ["in"]
-  def: "0.0254 * meter"
+  english_engineering:
+    base_units: &english_engineering_units
+      TIME: second
+      LENGTH: international_foot
+      MASS: pound_mass
+      FORCE: pound_force
+      temperature: fahrenheit
+      absolute_temperature: rankine
+  
+  english:
+    base_units: *english_engineering_units
 
-foot:
-  plural: feet
-  dimension: length
-  si: 0.3048 # exact
-  abbrev: ["ft"]
+  kip_in_F:
+    base_units: 
+      <<: *english_engineering_units
+      LENGTH: inch
+      FORCE: kip
 
-yard:
-  abbrev: ["yd"]
-  dimension: length
-  si: 0.9144 # exact
 
-#======================================
-# Mass
-#======================================
-kilogram:
-  abbrev: ["kg"]
-  dimension: mass
-  si: 1.0
+units:
+  # Length
+  #======================================
+  meter:
+    si: 1.0 # exact
+    dimension: LENGTH
+    symbols: ["m"]
+    reference-doi: 10.6028/NIST.SP.330-2019
+    plural: meters
+
+  milimeter:
+    name: milimeter
+    reference-doi: 10.6028/NIST.SP.330-2019
+    plural: milimeters
+    dimension: LENGTH
+    symbols: ["mm"]
+    si: 0.001 # exact
+
+  inch:
+    si: 0.0254 # exact
+    plural: inches
+    dimension: LENGTH
+    symbols: ["inch", "in"]
+    def: "0.0254 * meter"
+
+  international_foot:
+    plural: feet
+    dimension: LENGTH
+    si: 0.3048 # exact
+    symbols: ["foot", "ft"]
+  
+  us_survey_foot:
+    plural: feet
+    dimension: LENGTH
+    si: 0.30480061
+    def: "1200/3937 * meter"
+    symbols: ["s_foot", "s_ft"]
+
+    #  indian_survey_foot:
+    #    si: 0.3047996
+    #    def: "0.3047996 * meter"
+
+
+  international_yard:
+    symbols: ["yard", "yd"]
+    dimension: LENGTH
+    si: 0.9144 # exact
+
+  # Mass
+  #======================================
+  kilogram:
+    name: kilogram
+    reference-doi: 10.6028/NIST.SP.330-2019
+    symbols: ["kg"]
+    dimension: MASS
+    si: 1.0
+    def: "(299792458 * 299792458) / (6.62607015E-24) * (meter * meter) * second"
+
+  pound_mass:
+    name: Pound-mass
+    reference-doi: 10/gf3vmj
+    symbols: ["lb"]
+    dimension: MASS
+    si: 0.45359237 # exact
+    si_defined: true
+
+  # Force
+  #======================================
+  newton:
+    symbols: ["N"]
+    dimension: FORCE
+    si: 1.0
+
+  pound_force:
+    symbols: ["lbf"]
+    dimension: FORCE
+    si: 4.4482216152605
+
+  kip:
+    si: 4448.2216
+    symbols: ["kip"]
+    dimension: FORCE
+    def: "1000 * pound_force"
+
+  #  ksi:
+  #    si: 689475700000
+  #    symbols: ["ksi"]
+  #    derive_dimension: MASS / (TIME * TIME * LENGTH)
+
+
+
+constants:
+  gravitational_acceleration:
+    si: 9.80665
+    symbols: ["g"]
+    derive_dimension: "LENGTH / (TIME * TIME)"
+
+  vacuum_speed_of_light:
+    si: 299792458
+    symbols: ["c"]
+
+
 
