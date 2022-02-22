@@ -5,12 +5,14 @@ prefixes:
 systems:
   si:
     base_units: &si_unit_system
-      TIME: second
-      LENGTH: meter
-      MASS: kilogram
-      FORCE: newton
+      TIME:        second
+      LENGTH:      meter
+      MASS:        kilogram
+      FORCE:       newton
       temperature: Celsius
       absolute_temperature: kelvin
+
+      PLANE_ANGLE: radian
 
   metric:
     base_units: *si_unit_system
@@ -18,11 +20,15 @@ systems:
   english_engineering:
     base_units: &english_engineering_units
       TIME: second
-      LENGTH: international_foot
+      LENGTH: inch
       MASS: pound_mass
       FORCE: pound_force
+      FREQUENCY: hertz
       temperature: fahrenheit
       absolute_temperature: rankine
+      
+      PLANE_ANGLE: radian
+
   
   english:
     base_units: *english_engineering_units
@@ -82,6 +88,7 @@ units:
     dimension: LENGTH
     si: 0.9144 # exact
 
+
   # Mass
   #======================================
   kilogram:
@@ -122,13 +129,31 @@ units:
   #    si: 689475700000
   #    symbols: ["ksi"]
   #    derive_dimension: MASS / (TIME * TIME * LENGTH)
+  
+  # Frequency
+  #======================================
+  hertz:
+    dimension: FREQUENCY
+    si: 1.0
+    symbols: ["Hz"]
+  
+  # Plane Angle
+  radian:
+    dimension: PLANE_ANGLE
+    si: 1.0
+    symbols: ["radian", "rad"]
 
+  arc_degree:
+    dimension: PLANE_ANGLE
+    symbols: ["deg"]
+    si: 0.174533 
+    def: "M_PI / 180.0"
 
 
 constants:
   gravitational_acceleration:
     si: 9.80665
-    symbols: ["g"]
+    symbols: ["gravity"]
     derive_dimension: "LENGTH / (TIME * TIME)"
 
   vacuum_speed_of_light:

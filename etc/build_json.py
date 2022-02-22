@@ -30,11 +30,11 @@ if __name__=="__main__":
     for group in defs["systems"]:
         conversions = {}
         group_file = json_directory / f"{group}{abbrev_ext}.json"
-
+        base_units = defs["systems"][group]["base_units"]
         for name, unit in defs["units"].items():
             dimension = unit["dimension"]
-            if dimension in defs["systems"][group]["base_units"]:
-                dest_unit = defs["systems"][group]["base_units"][dimension]
+            if dimension in base_units:
+                dest_unit = base_units[dimension]
 
                 #decimal.getcontext().prec = prec
                 scale = Decimal(unit["si"]) / Decimal(defs["units"][dest_unit]["si"])
@@ -44,7 +44,7 @@ if __name__=="__main__":
                 if abbreviate:
                     for abbrev in unit["symbols"]:
                         conversions[abbrev] = conversions[name]
-
+        conversions["gravity"] = defs["constants"]["gravitational_acceleration"]["si"] / defs["units"][base_units["LENGTH"]]["si"]
         with open(group_file, "w+") as f:
             json.dump(conversions, f)
 
