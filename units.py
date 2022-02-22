@@ -9,10 +9,10 @@ except ImportError:
 
 __all__ = ["UnitHandler"]
 
-JSON_DIR = Path(__file__).parents[0] / "build/"
+JSON_DIR = Path(__file__).parents[0] / "json/"
 
 
-def load(system, *overrides, abbrev=True):
+def load(system, overrides, abbrev=True):
     abbrev_ext = "-w_abbrev" if abbrev else ""
 
     def_file = JSON_DIR / f"{system}{abbrev_ext}.json"
@@ -78,7 +78,7 @@ class Dimension(float):
 class UnitHandler:
     def __init__(self, base, abbrev=True):
         system, *overrides = base.split(", ")
-        self.base_dims = load(system, *overrides)
+        self.base_dims = load(system, overrides)
         # for key, val in build_conversions(abbrev=abbrev,**base_dims).items():
         #    setattr(self, key, val)
 
