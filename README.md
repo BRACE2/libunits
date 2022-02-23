@@ -1,9 +1,6 @@
----
-title: Elle-Units
-desctiption: Unit conversion utilities
-...
+# libUnits
 
-# Elle - Units
+A simple unit library designed for embedding in other libraries.
 
 ## APIs
 

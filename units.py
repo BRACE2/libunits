@@ -12,13 +12,14 @@ __all__ = ["UnitHandler"]
 JSON_DIR = Path(__file__).parents[0] / "json/"
 
 
-def load(system, overrides, abbrev=True):
+def load(system, overrides=(), abbrev=True):
     abbrev_ext = "-w_abbrev" if abbrev else ""
 
     def_file = JSON_DIR / f"{system}{abbrev_ext}.json"
     try:
         with open(def_file, "r") as f:
             defs = json.load(f)
+
     except FileNotFoundError:
         raise ValueError(f"Cannot find unit definition file {def_file}")
 
@@ -79,8 +80,6 @@ class UnitHandler:
     def __init__(self, base, abbrev=True):
         system, *overrides = base.split(", ")
         self.base_dims = load(system, overrides)
-        # for key, val in build_conversions(abbrev=abbrev,**base_dims).items():
-        #    setattr(self, key, val)
 
     def __getattr__(self, name):
         return Dimension(self.base_dims[name])
@@ -96,4 +95,5 @@ class UnitHandler:
         if isinstance(dim, str):
             dim = self.dim(dim)
         return SpacedDimensions(dim, justification)
+
 
