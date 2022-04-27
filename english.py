@@ -1,4 +1,13 @@
 import sys
+
+# Constants
+from math import pi
+gravity = 386.08858267717
+
+# Angles
+rad = 1
+deg = pi/180
+
 # try using a faster library
 try: import orjson as json
 except ImportError: import json
@@ -14,5 +23,9 @@ defs = units.load("english")
 
 for name, value in defs.items():
     setattr(this_module, name, units.Dimension(value))
+
+ft = foot
+# Derived units
+ksi, psi, pcf = 1000, 1.0, 1.0/ft**3
 
 

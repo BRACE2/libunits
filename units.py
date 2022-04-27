@@ -96,4 +96,6 @@ class UnitHandler:
             dim = self.dim(dim)
         return SpacedDimensions(dim, justification)
 
+def spacing(dim, just): return SpacedDimensions(dim, just)
+
 
